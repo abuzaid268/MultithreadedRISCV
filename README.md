@@ -11,4 +11,7 @@ The final processor supports 32 bit instructions, a variety of instructions from
 
 Finally, as mentioned above the processor modification were successfully implemented and the coarse grained multithreaded architecture was achieved, Figure 3.1 below illustrates the final design and the 5 stage pipelined processor, noting that thread management unit and IF stage are parallel to each other, and updating the program counter is not considered to be one of the pipeline stages. 
 
+If you want to embed images, this is how you do it:
+
+![Image of Yaktocat](https://octodex.github.com/images/yaktocat.png)
 
