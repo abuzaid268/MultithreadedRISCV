@@ -1,0 +1,106 @@
+ecall
+addi t0,zero,0
+addi t1,zero,1
+addi t2,zero,2
+addi t3,zero,3
+beq tp,t0,T1
+beq tp,t1,T2
+beq tp,t2,T3
+beq tp,t3,T4
+T1: li sp,65536
+addi a2,zero,5
+addi s0,zero,5
+addi t1,zero,1
+li a0,1
+return1: jal add3
+addi t6,t1,0
+addi s0,s0,1
+addi a2,s0,0
+j return1
+T2:li sp,131072
+addi a2,zero,2
+addi s0,zero,2
+addi t0,zero,2
+return2:jal fibonnacci
+addi t6,a0,0
+addi s0,s0,1
+addi a2,s0,0
+j return2
+T3:li sp,196608
+addi a2,zero,5
+addi s0,zero,5
+addi t1,zero,1
+return3: jal add4
+addi t6,t1,0
+addi s0,s0,1
+addi a2,s0,0
+j return3
+T4: li sp,262144
+addi t5,zero,5
+li a2,5
+li s0,5
+return4:jal fact
+addi t6,t1,0
+addi s0,s0,1
+addi a2,s0,0
+j return4
+add3: addi sp,sp,-4
+sw ra,0(sp)
+sw t0, 2(sp) #s0
+li t1,0 #v0
+beq a2,zero,doneT1
+addi t0,a2,0
+addi a2,a2,-1
+jal add3
+addi t1,t1,3
+doneT1:lw ra,0(sp)
+lw t0,2(sp)
+addi sp,sp,4
+jr ra 
+fibonnacci:  addi sp,sp,-6
+sw ra,0(sp)
+sw a2,2(sp)
+sw a1,4(sp)
+bge t0,a2,basecase
+j recursive
+basecase: li a0,1
+addi sp,sp,6
+jr ra
+recursive:addi a2,a2,-1
+jal fibonnacci
+lw a2,2(sp)
+add a1,a0,zero
+addi a2,a2,-2
+jal fibonnacci
+add a0,a1,a0
+lw ra,0(sp)
+lw a2,2(sp)
+lw a1,4(sp)
+addi sp,sp,6
+jr ra
+add4: addi sp,sp,-4
+sw ra,0(sp)
+sw t0, 2(sp) #s0
+li t1,0 #v0
+beq a2,zero,doneT4
+addi t0,a2,0
+addi a2,a2,-1
+jal add4
+addi t1,t1,4
+doneT4:lw ra,0(sp)
+lw t0,2(sp)
+addi sp,sp,4
+jr ra 
+fact: addi sp,sp,-4
+sw ra,0(sp)
+sw t0, 2(sp) #s0
+li t1,1 #v0
+beq a2,zero,done
+addi t0,a2,0
+addi a2,a2,-1
+jal fact
+add t1,t0,t1
+done:lw ra,0(sp)
+lw t0,2(sp)
+addi sp,sp,4
+jr ra

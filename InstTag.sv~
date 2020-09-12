@@ -1,0 +1,27 @@
+module InstTag #(parameter SIZE = 512)
+(
+input logic WriteTag,clk,Enable,nReset,
+input logic [15:0] TagAddress,WriteAddressTag,
+input logic [13:0] CacheIndexWrite,CacheIndexRead,
+output logic TagCompare
+);
+
+logic [15:0] TagInst [0:SIZE - 1];
+
+//assign TagCompare <= (TagAddress == TagInst[CacheIndexRead]) ? 1'b1 : 1'b0; 
+initial
+  $readmemb("tag.mem", InstMem);
+
+always_ff @(posedge clk,negedge nReset)
+begin
+if (!nReset)
+TagCompare <= 1;
+else
+begin
+if (WriteTag)
+TagInst[CacheIndexWrite] <= WriteAddressTag;
+if (Enable) TagCompare <= (TagAddress == TagInst[CacheIndexRead]) ? 1'b1 : 1'b0; 
+end
+end
+endmodule
+

@@ -1,0 +1,20 @@
+module InstCache #(parameter SIZE = 512)
+(
+input logic  clk,WriteInst,Enable,nReset,
+input logic  [13:0] CacheIndexRead,CacheIndexWrite,
+input logic  [31:0] InstData,
+output logic [31:0] Inst
+);
+
+logic [31:0] InstMem [0: SIZE - 1];
+//assign Inst <= InstMem[CacheIndexRead];
+always_ff @(posedge clk,negedge nReset)
+begin
+if (!nReset) Inst <= 0;
+else
+begin
+if(WriteInst) InstMem[CacheIndexWrite] <= InstData;
+if (Enable) Inst <= InstMem[CacheIndexRead];
+end
+end
+endmodule

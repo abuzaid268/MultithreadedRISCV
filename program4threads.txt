@@ -1,0 +1,117 @@
+ecall
+addi t0,zero,0
+addi t1,zero,1
+addi t2,zero,2
+addi t3,zero,3
+beq tp,t0,T1
+beq tp,t1,T2
+beq tp,t2,T3
+beq tp,t3,T4
+T1: li sp,65536
+addi t5,zero,5
+addi a2,zero,2000
+mul a2,t5,a2
+addi t1,zero,1
+li a0,1
+jal square
+addi a0,a0,0
+j exit
+T2:li sp,131072
+addi a2,zero,15
+addi t0,zero,2
+jal fibonnacci
+addi a0,a0,0
+j exit
+T3:li sp,196608
+addi t5,zero,4
+addi a2,zero,2047
+addi a2,a2,1953
+addi t1,zero,1 # multiply
+li t2,1 #multiply
+addi t3,zero,2047 #addition
+addi t3,t3,1953
+li t0,0
+jal Multiply
+addi a0,zero,0
+j exit
+T4: li sp,262144
+addi t5,zero,5
+li a2,1000
+mul a2,t5,a2
+addi t2,zero,8
+jal fact
+addi t1,t1,0
+j exit
+square: addi sp,sp,-4
+sw a0,0(sp)
+mul a0,a2,a2
+addi a2,a2,-1
+bne a2,t1,square
+jr ra
+fibonnacci:  addi sp,sp,-12
+sw ra,0(sp)
+sw a2,4(sp)
+sw a1,8(sp)
+bge t0,a2,basecase
+j recursive
+basecase: li a0,1
+addi sp,sp,12
+jr ra
+recursive:addi a2,a2,-1
+jal fibonnacci
+lw a2,4(sp)
+add a1,a0,zero
+addi a2,a2,-2
+jal fibonnacci
+add a0,a1,a0
+lw ra,0(sp)
+lw a2,4(sp)
+lw a1,8(sp)
+addi sp,sp,12
+jr ra
+Multiply: mul t2,a2,a2
+addi sp,sp,-4
+sw t2,4(sp)
+addi a2,a2,-1
+beq t1,a2,Addition
+j Multiply
+Addition: lw a0,4(sp)
+addi sp,sp,4
+add t0,t0,a0
+addi t1,t1,1
+bne t1,t3,Addition
+jr ra
+fact: sub sp,sp,t2
+sw ra,0(sp)
+sw t0, 4(sp) #s0
+li t1,1 #v0
+beq a2,zero,done
+addi t0,a2,0
+addi a2,a2,-1
+jal fact
+add t1,t0,t1
+done:lw ra,0(sp)
+lw t0,4(sp)
+add sp,sp,t2
+jr ra
+exit: addi s0,zero,1
+addi t0,zero,0
+addi t1,zero,1
+addi t2,zero,2
+addi t3,zero,3
+loop: beq tp,t0,T1
+beq tp,t1,T2
+beq tp,t2,T3
+beq tp,t3,T4
+
+
+
+
+
+
+
+
+
+
+
+

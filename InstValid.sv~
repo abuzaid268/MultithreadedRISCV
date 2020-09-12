@@ -1,0 +1,29 @@
+module InstValid #(parameter SIZE = 512)
+(
+input logic clk,WriteValid,nReset,Enable,
+input logic [13:0] CacheIndexWrite,CacheIndexRead,
+output logic Valid
+);
+
+logic  Validmemory [0: SIZE - 1];
+always_ff @(posedge clk, negedge nReset)
+begin
+/*if (!nReset)
+begin
+for (int i = 0; i <SIZE; i++)
+Validmemory[i] <= 0;
+end
+else
+begin*/
+if (!nReset)
+Valid <= 1;
+else
+begin
+if (WriteValid)
+Validmemory [CacheIndexWrite] <= 1'b1;
+//if (Enable)
+Valid <= Validmemory[CacheIndexRead]; 
+//end
+end
+end
+endmodule
